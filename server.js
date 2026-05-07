@@ -1,31 +1,28 @@
-require('dotenv').config(); // 1. Cargar las variables de entorno primero que nada
+require('dotenv').config(); 
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongodb = require('./db/connection');
 const cors = require('cors');
-const session = require('express-session'); // El carnet
-const passport = require('passport'); // El recepcionista (lo configuraremos en middleware)
+const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Configuración de Middlewares (La "Tubería")
 app
-  .use(cors())
-  .use(bodyParser.json())
+  .use(cors()) // Gestión de permisos de acceso (CORS)
+  .use(bodyParser.json()) // Traductor de JSON
   .use(session({
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: true
   }))
-  .use(passport.initialize()) // Activar recepcionista
-  .use(passport.session())    // Recordar carnet
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-  })
-  .use('/', require('./routes'));
+  .use(passport.initialize())
+  .use(passport.session())
+  .use('/', require('./routes')); // Enrutador principal
 
-// La lógica de encendido que ahora usa nuestro archivo db/connection.js
+// Inicialización de la Base de Datos y Encendido del Servidor
 mongodb.initDb((err) => {
   if (err) {
     console.log('❌ Error al conectar a la BD:', err);
