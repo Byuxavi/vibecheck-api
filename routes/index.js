@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 
 // 3. Rutas de la API
 router.use('/habits', require('./habits'));
-// router.use('/users', require('./users')); 
+router.use('/users', require('./users'));
 
 module.exports = router;

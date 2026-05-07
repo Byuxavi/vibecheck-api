@@ -10,6 +10,15 @@ const habitValidationRules = () => {
   ];
 };
 
+const userValidationRules = () => {
+  return [
+    body('firstName').trim().notEmpty().withMessage('First name is required.'),
+    body('lastName').trim().notEmpty().withMessage('Last name is required.'),
+    body('email').isEmail().withMessage('Please enter a valid email.'),
+    body('favoriteColor').optional().trim()
+  ];
+};
+
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -23,7 +32,9 @@ const validate = (req, res, next) => {
   });
 };
 
+// Exporta también las nuevas reglas
 module.exports = {
   habitValidationRules,
+  userValidationRules, // <-- Agregar esto
   validate,
 };
