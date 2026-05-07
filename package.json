@@ -2,12 +2,15 @@
   "name": "vibecheck-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node swagger.js && node server.js",
+    "swagger": "node swagger.js",
+    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Javier Manosalva",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
