@@ -1,17 +1,21 @@
 const swaggerAutogen = require('swagger-autogen')();
 
+// Render define RENDER_EXTERNAL_HOSTNAME automáticamente en sus servidores
+const host = process.env.RENDER_EXTERNAL_HOSTNAME || 'localhost:8080';
+
+// Si estamos en Render, usamos HTTPS. Si no, HTTP.
+const schemes = process.env.RENDER_EXTERNAL_HOSTNAME ? ['https'] : ['http'];
+
 const doc = {
   info: {
     title: 'VibeCheck: Wellness & Habit Tracker API',
     description: 'API para la gestión de hábitos y bienestar personal',
   },
-  // Cambia esto por tu URL de Render cuando la tengas
-  host: process.env.HOST || 'localhost:8080',
-  schemes: ['http', 'https'],
+  host: host,
+  schemes: schemes, 
 };
 
 const outputFile = './swagger.json';
 const endpointsFiles = ['./routes/index.js'];
 
-// Generar el archivo swagger.json
 swaggerAutogen(outputFile, endpointsFiles, doc);
