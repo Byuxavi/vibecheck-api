@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const habitsController = require('../controllers/habits');
 const { habitValidationRules, validate } = require('../middleware/validate');
+const { isAuthenticated } = require('../middleware/authenticate');
 
-// Para crear un hábito, primero validamos
-router.post('/', habitValidationRules(), validate, habitsController.createHabit);
-
-// Para actualizar, también validamos
-router.put('/:id', habitValidationRules(), validate, habitsController.updateHabit);
-
+// Rutas Públicas
 router.get('/', habitsController.getAllHabits);
-router.delete('/:id', habitsController.deleteHabit);
+router.get('/:id', habitsController.getSingleHabit); // Ya no dará error
+
+// Rutas Protegidas (OAuth + Validación)
+router.post('/', isAuthenticated, habitValidationRules(), validate, habitsController.createHabit);
+router.put('/:id', isAuthenticated, habitValidationRules(), validate, habitsController.updateHabit);
+router.delete('/:id', isAuthenticated, habitsController.deleteHabit);
 
 module.exports = router;

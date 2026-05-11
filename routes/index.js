@@ -13,5 +13,6 @@ router.get('/', (req, res) => {
 // 3. Rutas de la API
 router.use('/habits', require('./habits'));
 router.use('/users', require('./users'));
-
+router.use('/goals', require('./goals'));      
+router.use('/reminders', require('./reminders'));
 module.exports = router;
