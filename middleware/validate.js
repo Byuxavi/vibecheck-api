@@ -32,9 +32,26 @@ const validate = (req, res, next) => {
   });
 };
 
-// Exporta también las nuevas reglas
+
+const goalValidationRules = () => {
+  return [
+    body('title').trim().notEmpty().withMessage('Goal title is required.'),
+    body('targetDate').isISO8601().withMessage('Must be a valid date (YYYY-MM-DD).')
+  ];
+};
+
+const reminderValidationRules = () => {
+  return [
+    body('message').trim().notEmpty().withMessage('Reminder message is required.'),
+    body('reminderTime').notEmpty().withMessage('Reminder time is required.')
+  ];
+};
+
+// ACTUALIZA TU EXPORTACIÓN
 module.exports = {
   habitValidationRules,
-  userValidationRules, // <-- Agregar esto
+  userValidationRules,
+  goalValidationRules,     
+  reminderValidationRules, 
   validate,
 };

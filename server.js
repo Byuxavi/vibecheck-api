@@ -9,10 +9,10 @@ const passport = require('passport');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Configuración de Middlewares (La "Tubería")
+// Configuración de Middlewares
 app
-  .use(cors()) // Gestión de permisos de acceso (CORS)
-  .use(bodyParser.json()) // Traductor de JSON
+  .use(cors()) 
+  .use(bodyParser.json()) 
   .use(session({
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
@@ -20,15 +20,21 @@ app
   }))
   .use(passport.initialize())
   .use(passport.session())
-  .use('/', require('./routes')); // Enrutador principal
+  .use('/', require('./routes')); 
 
-// Inicialización de la Base de Datos y Encendido del Servidor
-mongodb.initDb((err) => {
-  if (err) {
-    console.log('❌ Error al conectar a la BD:', err);
-  } else {
-    app.listen(port, () => {
-      console.log(`🚀 Connected to DB and listening on ${port}`);
-    });
-  }
-});
+// --- CAMBIO AQUÍ PARA LOS TESTS ---
+// Solo encendemos el servidor si NO estamos en modo de prueba (test)
+if (process.env.NODE_ENV !== 'test') {
+  mongodb.initDb((err) => {
+    if (err) {
+      console.log('❌ Error al conectar a la BD:', err);
+    } else {
+      app.listen(port, () => {
+        console.log(`🚀 Connected to DB and listening on ${port}`);
+      });
+    }
+  });
+}
+
+// Exportamos app para que Supertest pueda usarlo
+module.exports = app;

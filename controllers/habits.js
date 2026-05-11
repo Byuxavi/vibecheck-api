@@ -12,7 +12,21 @@ const getAllHabits = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener los hábitos.' });
   }
 };
-
+const getSingleHabit = async (req, res) => {
+  try {
+    const habitId = new ObjectId(req.params.id);
+    const result = await mongodb.getDb().db().collection('habits').find({ _id: habitId });
+    result.toArray().then((lists) => {
+      if (lists.length === 0) {
+        return res.status(404).json({ message: 'Hábito no encontrado.' });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(lists[0]);
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener el hábito (ID inválido quizá).' });
+  }
+};
 const createHabit = async (req, res) => {
   try {
     const habit = {
@@ -77,6 +91,7 @@ const deleteHabit = async (req, res) => {
 
 module.exports = { 
   getAllHabits, 
+  getSingleHabit,
   createHabit, 
   updateHabit, 
   deleteHabit 
