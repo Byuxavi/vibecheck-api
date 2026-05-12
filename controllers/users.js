@@ -16,7 +16,10 @@ const createUser = async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      favoriteColor: req.body.favoriteColor
+      favoriteColor: req.body.favoriteColor,
+      birthday: req.body.birthday,      // Campo 5
+      gender: req.body.gender,          // Campo 6
+      profilePicture: req.body.profilePicture // Campo 7 (URL de la imagen)
     };
     const response = await mongodb.getDb().db().collection('users').insertOne(user);
     if (response.acknowledged) {
@@ -51,7 +54,10 @@ const updateUser = async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      favoriteColor: req.body.favoriteColor
+      favoriteColor: req.body.favoriteColor,
+      birthday: req.body.birthday,      // Campo 5
+      gender: req.body.gender,          // Campo 6
+      profilePicture: req.body.profilePicture // Campo 7
     };
     const response = await mongodb.getDb().db().collection('users').replaceOne({ _id: userId }, user);
     if (response.modifiedCount > 0) {

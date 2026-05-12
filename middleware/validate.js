@@ -15,10 +15,12 @@ const userValidationRules = () => {
     body('firstName').trim().notEmpty().withMessage('First name is required.'),
     body('lastName').trim().notEmpty().withMessage('Last name is required.'),
     body('email').isEmail().withMessage('Please enter a valid email.'),
-    body('favoriteColor').optional().trim()
+    body('favoriteColor').optional().trim(),
+    body('birthday').optional().isISO8601().withMessage('Birthday must be a valid date.'),
+    body('gender').optional().trim(),
+    body('profilePicture').optional().isURL().withMessage('Must be a valid URL.')
   ];
 };
-
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
